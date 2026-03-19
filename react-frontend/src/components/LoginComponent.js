@@ -13,7 +13,11 @@ const LoginComponent = () => {
         e.preventDefault();
         try {
             const response = await AuthService.login({ email, password });
-            if (response.data === 'Login successful') {
+            if (response.data && response.data.email) {
+                AuthService.saveUser({ ...response.data, password });
+                navigate('/dashboard');
+            } else if (response.data === 'Login successful') {
+                AuthService.saveUser({ email, password, name: email.split('@')[0] });
                 navigate('/dashboard');
             } else {
                 setMessage('Invalid credentials');

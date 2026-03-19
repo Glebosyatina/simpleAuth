@@ -7,8 +7,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-
-
 @RequestMapping("/api")
 public class UserController {
 
@@ -32,10 +30,10 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody User user) {
+    public Object login(@RequestBody User user) {
         User existingUser = userService.findByEmail(user.getEmail());
         if (existingUser != null && passwordEncoder.matches(user.getPassword(), existingUser.getPassword())) {
-            return "Login successful";
+            return existingUser;
         } else {
             return "Invalid credentials";
         }
